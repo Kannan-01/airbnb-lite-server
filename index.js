@@ -8,6 +8,12 @@ require("./DB/connection")
 // create express application
 const propertyServer = express();
 
+// Increase the limit for JSON payloads
+propertyServer.use(express.json({ limit: '10mb' }));
+
+// Increase the limit for URL-encoded payloads (form data)
+propertyServer.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
 propertyServer.use(cors());
 // convert json to js
 propertyServer.use(express.json());
