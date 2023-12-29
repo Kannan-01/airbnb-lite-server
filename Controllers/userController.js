@@ -23,7 +23,6 @@ exports.register = async (req, res) => {
         address: "",
         userImage: "",
         idProof: "",
-        type: "user",
       });
       await newUser.save();
       res.status(200).json(newUser);

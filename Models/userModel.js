@@ -42,9 +42,6 @@ const userSchema = new mongoose.Schema({
   idProof: {
     type: String,
   },
-  type: {
-    type: String,
-  },
 });
 
 const users = mongoose.model("users", userSchema);
