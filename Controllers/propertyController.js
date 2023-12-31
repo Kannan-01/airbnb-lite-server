@@ -43,3 +43,14 @@ exports.properties = async (req, res) => {
       res.status(401).json(err);
     }
   };
+
+  exports.viewHostings = async (req, res) => {
+    const userId = req.payload;
+    try {
+      const property = await properties.find({userId});
+      console.log(property);
+      res.status(200).json(property);
+    } catch (err) {
+      res.status(401).json(err);
+    }
+  };

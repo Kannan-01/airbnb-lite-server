@@ -12,7 +12,7 @@ router.post("/login", userController.userLogin);
 router.post("/register", userController.register);
 
 // host your house
-router.post("/host",jwtMiddleware, PropertyController.host);
+router.post("/host", jwtMiddleware, PropertyController.host);
 
 // view all properties
 router.get("/properties", PropertyController.properties);
@@ -32,5 +32,19 @@ router.delete(
   jwtMiddleware,
   wishlistController.deleteWishlistItem
 );
+
+// account details
+router.get("/account", jwtMiddleware, userController.userDetails);
+
+// update user
+router.put("/update", jwtMiddleware, userController.editUser);
+
+// view host details
+router.get("/host/view/:userid", userController.hostDetails);
+
+// view payment
+router.get("/payment/:id", PropertyController.viewProperty);
+
+router.get("/hostings", jwtMiddleware, PropertyController.viewHostings);
 
 module.exports = router;
