@@ -2,6 +2,8 @@ const properties = require("../Models/propertyModel");
 
 exports.host = async (req, res) => {
   const userId = req.payload;
+
+  console.log(userId);
   const { title, state, district, city, price, image, description, category } =
     req.body;
   try {
@@ -49,6 +51,16 @@ exports.properties = async (req, res) => {
     try {
       const property = await properties.find({userId});
       console.log(property);
+      res.status(200).json(property);
+    } catch (err) {
+      res.status(401).json(err);
+    }
+  };
+
+  exports.DeleteHostings = async (req, res) => {
+    const {propertyId} = req.params;
+    try {
+      const property = await properties.findByIdAndDelete({_id:propertyId});
       res.status(200).json(property);
     } catch (err) {
       res.status(401).json(err);

@@ -4,6 +4,7 @@ const userController = require("../Controllers/userController");
 const PropertyController = require("../Controllers/propertyController");
 const wishlistController = require("../Controllers/wishlistController");
 const jwtMiddleware = require("../Middlewares/jwtMiddleware");
+const reserveController = require("../Controllers/reserveController");
 
 // login user
 router.post("/login", userController.userLogin);
@@ -46,5 +47,11 @@ router.get("/host/view/:userid", userController.hostDetails);
 router.get("/payment/:id", PropertyController.viewProperty);
 
 router.get("/hostings", jwtMiddleware, PropertyController.viewHostings);
+
+router.delete("/deleteProperty/:propertyId", PropertyController.DeleteHostings);
+
+router.post("/reserve", jwtMiddleware,reserveController.reserve);
+
+router.get("/reservations", jwtMiddleware, reserveController.getReservations);
 
 module.exports = router;
