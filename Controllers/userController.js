@@ -88,7 +88,7 @@ exports.editUser = async (req, res) => {
       { new: true }
     );
     await updateUser.save();
-    res.status(200).json(updateUser);
+    res.status(200).json(updateUser.userImage);
   } catch (err) {
     res.status(401).json(`Request Failed , Error : ${err}`);
   }
