@@ -39,7 +39,6 @@ exports.properties = async (req, res) => {
     const { id } = req.params;
     try {
       const property = await properties.findOne({_id:id});
-      console.log(property);
       res.status(200).json(property);
     } catch (err) {
       res.status(401).json(err);
@@ -50,7 +49,6 @@ exports.properties = async (req, res) => {
     const userId = req.payload;
     try {
       const property = await properties.find({userId});
-      console.log(property);
       res.status(200).json(property);
     } catch (err) {
       res.status(401).json(err);

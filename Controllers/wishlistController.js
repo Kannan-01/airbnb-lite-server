@@ -18,7 +18,7 @@ exports.addToWishlist = async (req, res) => {
   try {
     const existingProduct = await wishlists.findOne({ id, userId });
     if (existingProduct) {
-      res.status(406).json("Product already inside your wishlist");
+      res.status(406).json("Already in your wishlist");
     } else {
       const newProduct = new wishlists({
         id,
