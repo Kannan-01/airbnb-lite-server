@@ -1,11 +1,13 @@
 const { default: mongoose } = require("mongoose");
 const users = require("../Models/userModel");
 const jwt = require("jsonwebtoken");
-
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 // registration of user
 exports.register = async (req, res) => {
   console.log("inside userController register function");
   const { firstName, lastName, dateOfBirth, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
   try {
     const existingUser = await users.findOne({ email });
     if (existingUser) {
@@ -16,7 +18,7 @@ exports.register = async (req, res) => {
         lastName,
         dateOfBirth,
         email,
-        password,
+        password: hashedPassword,
         phoneNumber: "",
         emergencyNumber: "",
         address: "",
@@ -36,16 +38,22 @@ exports.userLogin = async (req, res) => {
   console.log("inside userController login function");
   const { email, password } = req.body;
   try {
-    const existingUser = await users.findOne({ email, password });
+    const existingUser = await users.findOne({ email });
     if (existingUser) {
-      const token = jwt.sign(
-        { type: "user", userId: existingUser._id },
-        process.env.JWT_SECRET_CODE
+      const passwordMatch = await bcrypt.compare(
+        password,
+        existingUser.password
       );
-      res.status(200).json({
-        existingUser,
-        token,
-      });
+      if (passwordMatch) {
+        const token = jwt.sign(
+          { type: "user", userId: existingUser._id },
+          process.env.JWT_SECRET_CODE
+        );
+        res.status(200).json({
+          existingUser,
+          token,
+        });
+      }
     } else {
       res.status(404).json(`Incorrect Email / Password`);
     }
