@@ -39,21 +39,16 @@ exports.userLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
     const existingUser = await users.findOne({ email });
-    if (existingUser) {
-      const passwordMatch = await bcrypt.compare(
-        password,
-        existingUser.password
+    const passwordMatch = await bcrypt.compare(password, existingUser.password);
+    if (existingUser && passwordMatch) {
+      const token = jwt.sign(
+        { type: "user", userId: existingUser._id },
+        process.env.JWT_SECRET_CODE
       );
-      if (passwordMatch) {
-        const token = jwt.sign(
-          { type: "user", userId: existingUser._id },
-          process.env.JWT_SECRET_CODE
-        );
-        res.status(200).json({
-          existingUser,
-          token,
-        });
-      }
+      res.status(200).json({
+        existingUser,
+        token,
+      });
     } else {
       res.status(404).json(`Incorrect Email / Password`);
     }
